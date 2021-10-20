@@ -15,4 +15,23 @@ class BookService {
     }
     return false;
   }
+
+  //returns true if the user was unregistered (unsubscribe)
+  unregisterUser(user) {
+    const { username } = user;
+    if (this.isUserAvailable(username)) {
+      delete this.users[username];
+      return true;
+    }
+    return false;
+  }
+
+  notify(bookTitle) {
+    if (Object.keys(this.users) != []) {
+      console.log(`\n${bookTitle}`);
+      Object.values(this.users).forEach((user) => {
+        user.getNewBookAdded(bookTitle);
+      });
+    }
+  }
 }
