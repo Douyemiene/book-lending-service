@@ -34,4 +34,30 @@ class BookService {
       });
     }
   }
+
+  isBookAvailable(bookIsbn) {
+    if (this.books.hasOwnProperty(bookIsbn)) {
+      return true;
+    }
+    return false;
+  }
+
+  //confirms that a user exists
+  isUserAvailable(username) {
+    if (this.users.hasOwnProperty(username)) {
+      return true;
+    }
+    return false;
+  }
+
+  //confirms if a user has borrowed a book before
+  hasUserLend(username) {
+    if (
+      this.isUserAvailable(username) &&
+      username in this.usersAndBooksCollected
+    ) {
+      return true;
+    }
+    return false;
+  }
 }
