@@ -60,4 +60,33 @@ class BookService {
     }
     return false;
   }
+
+  //returns true if the book was added, and false otherwise
+  addBook(book) {
+    const {isbn,title} = book
+    //add book if it's not already available
+    if (!this.isBookAvailable(isbn)) {
+      this.books[isbn] = book;
+      //notify subscribers
+      this.notify(title)
+      return true;
+    }
+    return false;
+  }
+
+  //get the name of a book using the isbn
+  getBookName(bookIsbn) {
+    if (bookIsbn in this.books) {
+      return this.books[bookIsbn];
+    }
+    return null;
+  }
+  //returns true if the book was removed, and false otherwise
+  removeBook(bookIsbn) {
+    if (this.isBookAvailable(bookIsbn)) {
+      delete this.books[bookIsbn];
+      return true;
+    }
+    return false;
+  }
 }
