@@ -1,3 +1,5 @@
+const { Book } = require("./helperClasses");
+
 class BookService {
   constructor() {
     this.books = {};
@@ -63,12 +65,12 @@ class BookService {
 
   //returns true if the book was added, and false otherwise
   addBook(book) {
-    const {isbn,title} = book
+    const { isbn, title } = book;
     //add book if it's not already available
     if (!this.isBookAvailable(isbn)) {
       this.books[isbn] = book;
       //notify subscribers
-      this.notify(title)
+      this.notify(title);
       return true;
     }
     return false;
@@ -89,4 +91,24 @@ class BookService {
     }
     return false;
   }
+
+  /* only users can lend a book
+  This function returns true when the user and the book is available, false otherwise
+  */
+  lendBook(username, bookIsbn) {
+    //check if the user and book is available
+    if (this.isUserAvailable(username) && this.isBookAvailable(bookIsbn)) {
+      //check if user has borrowed a book before
+      if (!(username in this.usersAndBooksCollected)) {
+        this.usersAndBooksCollected[username] = [bookIsbn];
+      } else {
+        this.usersAndBooksCollected[username].push(bookIsbn);
+      }
+
+      return true;
+    }
+    return false;
+  }
 }
+
+module.exports = BookService;
